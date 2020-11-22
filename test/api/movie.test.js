@@ -3,19 +3,20 @@ const chaiHttp = require('chai-http');
 const expect = chai.expect;
 const should = chai.should();
 const server = require('../../app');
+const directorId = require('./director.test');
 
 chai.use(chaiHttp);
 
 let token;
 let movieId;
-
 describe('/_/Movies/_/', () =>{
     before('Token is True',(done) =>{
         chai.request(server)
             .post('/authenticate')
-            .send({username:"cem_nisan3",password:"123456"})
+            .send({username:"cem_nisan4",password:"123456"})
             .end((err,res) =>{
                 token = res.body.token;
+                console.log(token);
                 done();
             });
     });
@@ -36,7 +37,7 @@ describe('/_/Movies/_/', () =>{
         it('it sould post a movie.',(done) =>{
             const movie = {
                 title: "Example",
-                director_id : "5fb58d9777a57426389e57c8",
+                director_id : directorId.id,
                 content : "lorem ipsum",
                 category: 'drama',
                 year: 2000,
@@ -47,10 +48,11 @@ describe('/_/Movies/_/', () =>{
                 .post('/api/movies')
                 .send(movie)
                 .set('x-access-token',token)
-                .end(async (err,res) =>{
+                .end((err,res) =>{
                     res.should.have.status(200);
-                    res.body.should.be.a('object');
+                    expect(res.body).to.be.an('object');
                     movieId = res.body._id;
+                    console.log(res.body)
                     done();
                 });
         });
@@ -63,14 +65,15 @@ describe('/_/Movies/_/', () =>{
                 .end((err,res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
+                    console.log(res.body);
                     done();
                 });
         });
     });
     describe('Update Movies',() =>{
         const movie = {
-            title: "Example",
-            director_id : "5fb58d9777a57426389e57c9",
+            title: "Hey you",
+            director_id : directorId.id,
             content : "lorem ipsum",
             category: 'drama',
             year: 1996,
@@ -85,7 +88,7 @@ describe('/_/Movies/_/', () =>{
                 .end((err,res) =>{
                     res.should.have.status(200);
                     expect(res.body).to.be.a('object');
-
+                    console.log(res.body);
                     done();
                 });
         });
@@ -102,6 +105,7 @@ describe('/_/Movies/_/', () =>{
                     res.body.should.have.property('message').eql("The movie was successfully deleted.");
                     res.body.should.have.property('code').eql(1);
 
+                    console.log(res.body);
                     done();
                 });
         });

@@ -7,12 +7,13 @@ const server = require('../../app');
 chai.use(chaiHttp);
 
 let token;
+let id;
 
 describe('Directors Testing.',() => {
     before('Token is maybe true.',(done) =>{
         chai.request(server)
             .post('/authenticate')
-            .send({username:'cem_nisan3',password:'123456'})
+            .send({username:'cem_nisan4',password:'123456'})
             .end((err,res) =>{
                 res.should.have.status(200);
                 token = res.body.token;
@@ -48,6 +49,7 @@ describe('Directors Testing.',() => {
                     res.should.have.status(200);
                     expect(res.body).to.be.a('object');
                     console.log(res.body);
+                    id = res.body._id;
                     done();
                 });
         });
@@ -66,3 +68,7 @@ describe('Directors Testing.',() => {
         });
     });
 });
+
+module.exports = {
+    id:id
+}
