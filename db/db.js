@@ -2,7 +2,7 @@ const mongoose = require('mongoose'); // --> Mongoose kütüphanesini import etm
 
 module.exports = () =>{
     mongoose.connect(
-        'mongodb+srv://example@example_password@example.meex4.mongodb.net/example?retryWrites=true&w=majority\n',
+        'mongodb+srv://example:example@example.meex4.mongodb.net/example?retryWrites=true&w=majority',
         {useNewUrlParser: true,useUnifiedTopology: true,useFindAndModify: false}
     ) //--> MongoDB Atlas'tan aldığımız url
     mongoose.set('useCreateIndex',true)
